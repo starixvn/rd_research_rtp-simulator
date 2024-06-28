@@ -1,0 +1,19 @@
+{
+  "collectCoverage": true,
+  "collectCoverageFrom": ["src/**/*.ts"],
+  "coverageDirectory": "coverage",
+  "coverageReporters": ["cobertura", "text-summary", "text", "lcov"],
+  "reporters": [
+    "default",
+    [
+      "jest-junit",
+      {
+        "outputDirectory": "coverage"
+      }
+    ]
+  ],
+  "testResultsProcessor": "jest-sonar-reporter",
+  "transform": {
+    "^.+\\.tsx?$": "ts-jest"
+  }
+}

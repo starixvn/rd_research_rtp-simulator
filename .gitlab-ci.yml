@@ -1,0 +1,20 @@
+variables:
+  NODEJS_IMAGE: $DOCKER_REG_LOCAL_URL/docker-hub/library/node:lts-slim
+  PROJECT_NAME: rtp-simulator
+  ENABLE_TEST_JS: "true"
+  SRC_PATH: src
+
+include:
+  - project: ci/core-cicd
+    ref: main
+    file: luminet.gitlab-ci.yml
+
+unit_test_js:
+  artifacts:
+    paths:
+      - coverage
+      - reports
+    reports:
+      junit: coverage/*.xml
+    expire_in: 1 day
+  coverage: '/Lines\s*:\s*([\d\.]+)/'

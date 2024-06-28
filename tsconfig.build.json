@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "resolveJsonModule": false
+  },
+  "exclude": ["**/*.test.ts"],
+  "extends": "./tsconfig.json",
+  "include": ["src/**/*"]
+}
