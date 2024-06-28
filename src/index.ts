@@ -1,8 +1,7 @@
-#! /usr/bin/env node
-
+#! /usr/bin/env node --experimental-loader=extensionless
 import figlet from "figlet";
 import { Command } from "commander";
-import fs from "fs";
+import { simulateRtp } from "./rtp-simulator";
 import path from "path";
 
 const program = new Command();
@@ -17,16 +16,9 @@ program
 program
   .command("run-with-files")
   .description("Run simulating with files")
-  .argument("<resultHelper.t|js>", "resultHelper of game service (required)")
-  .argument("<gameSettings.t|js>", "gameSettings of game service (required)")
-  .argument("[constant.t|js]", "constant of game service (optional)")
-  .requiredOption("-t, --type <number>", "type of game service")
-  .action((helper, gameSettings, constant, options) => {
-    const type = options.type ? options.type : undefined;
-    if (type) {
-      console.log(type);
-    }
-    calculateRTP(helper, gameSettings, constant);
+  .requiredOption("-c, --configuration <file-config>", "file configuration for rtp simulator")
+  .action(async (options) => {
+    await calculateRTP(options.configuration);
   });
 
 program
@@ -39,12 +31,35 @@ program
     if (type) {
       console.log(type);
     }
-    calculateRTP(helper, gameSettings, constant);
+    calculateRTP(helper);
   });
 
 program.parse();
 
-function calculateRTP(helper: string, gameSettings: string, constant: string) {
-  console.log("calculating RTP");
-  console.log(helper + gameSettings + constant);
+async function calculateRTP(configuration: string) {
+  try {
+    console.time("time");
+    console.log("starting simulation");
+
+    const configs = await import(`${path.resolve(configuration)}`);
+
+    const resultHelper = await import(`${path.resolve(configs.default.resultHelper)}`);
+
+    const rtp = simulateRtp(
+      configs.default.randomModes,
+      configs.default.numberOfTurnsToRun,
+      resultHelper.gameData,
+      resultHelper.generateResult,
+      resultHelper.generateResultParams,
+      resultHelper.getSettlementResult,
+      resultHelper.getSettlementResultParams,
+      resultHelper.getOdds,
+      resultHelper.updateGameData
+    );
+
+    console.log(rtp);
+    console.timeEnd("time");
+  } catch (error) {
+    console.error("Error loading configuration:", error);
+  }
 }

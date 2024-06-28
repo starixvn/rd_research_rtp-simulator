@@ -14,7 +14,6 @@ export const simulateRtp = (
   updateGameData: Function
 ) => {
   const BET_CHOICES = {} as any;
-
   gameData.choices.forEach((choice: string) => {
     BET_CHOICES[choice] = 0;
   });

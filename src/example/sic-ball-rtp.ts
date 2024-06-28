@@ -2,12 +2,10 @@ import { SeedHelper, ServerSeedHelper } from "sc-game-base/src/core/helpers";
 import { getRandomIndex } from "sc-number-game-base/dist/helpers";
 import { Utils } from "@rd/numbers-game-probabilities";
 import Chance from "chance";
-import { simulateRtp } from "../rtp";
 
 const chance = new Chance();
 
-const randomModes = [1, 2, 3];
-const gameData = {
+export const gameData = {
   choices: ["big", "small", "specific1", "specific2", "specific3", "specific4", "specific5", "specific6"],
   odds: {
     big: 1.96,
@@ -22,7 +20,7 @@ function generateSeed(): string {
   return chance.ssn({ ssnFour: true });
 }
 
-const generateResult = (finalSeeds: any) => {
+export const generateResult = (finalSeeds: any) => {
   const TOTAL_BALLS = 6;
 
   const serverSeed = JSON.parse(finalSeeds.serverSeed);
@@ -36,7 +34,7 @@ const generateResult = (finalSeeds: any) => {
   return { balls };
 };
 
-const generateResultParams = (randomMode: number) => {
+export const generateResultParams = (randomMode: number) => {
   const BALLS_EACH_ROUND = 3;
   const TOTAL_BALLS = 6;
   const SERVER_SEED_SECRET_LENGTH = 32;
@@ -71,7 +69,7 @@ const finalHashToNumbers = (finalHash: string) => {
   return increments;
 };
 
-const getSettlementResult = (result: any) => {
+export const getSettlementResult = (result: any) => {
   const BIG_BEGIN = 11;
   const sum = Utils.getSum(result.balls);
   const big = sum >= BIG_BEGIN;
@@ -88,11 +86,11 @@ const getSettlementResult = (result: any) => {
   };
 };
 
-const getSettlementResultParams = (result: any) => {
+export const getSettlementResultParams = (result: any) => {
   return result;
 };
 
-const calculateAndReturnOdds = (
+export const calculateAndReturnOdds = (
   settlementDrawResult: Record<string, boolean>,
   resultBalls: number[],
   betOdds: Record<string, number>
@@ -129,22 +127,9 @@ const calculateAndReturnOdds = (
 const isSpecificChoice = (choice: string) => {
   return choice.includes("specific");
 };
-const getOdds = (settlementDrawResult: any, result: any, gameData: any) => {
+
+export const getOdds = (settlementDrawResult: any, result: any, gameData: any) => {
   return calculateAndReturnOdds(settlementDrawResult, result.balls, gameData.odds);
 };
 
-const updateGameData = (gameData: any, result: any, settlementResult: any, turn: number) => {};
-
-const rtp = simulateRtp(
-  randomModes,
-  100_000,
-  gameData,
-  generateResult,
-  generateResultParams,
-  getSettlementResult,
-  getSettlementResultParams,
-  getOdds,
-  updateGameData
-);
-
-console.log(rtp);
+export const updateGameData = (gameData: any, result: any, settlementResult: any, turn: number) => {};

@@ -2,7 +2,7 @@ import { SeedHelper, ServerSeedHelper } from "sc-game-base/src/core/helpers";
 import { generateRemainingBalls } from "sc-number-game-base/dist/helpers";
 import { Utils } from "@rd/numbers-game-probabilities";
 import Chance from "chance";
-import { simulateRtp } from "../rtp";
+import { simulateRtp } from "../rtp-simulator";
 import { random } from "mathjs";
 import { generateRandomNumbers } from "../helper/helper";
 

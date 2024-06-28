@@ -16,6 +16,7 @@
     "build": "tsc -p tsconfig.build.json",
     "debug": "tsc -p tsconfig.debug.json",
     "start": "node --experimental-loader=extensionless dist/index.js",
+    "test": "node --experimental-loader=extensionless dist/example/test.js",
     "rtp": "node --experimental-loader=extensionless dist/sic-ball-rtp.js",
     "reg": "tsc -p tsconfig.build.json"
   },
