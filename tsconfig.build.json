@@ -2,7 +2,7 @@
   "compilerOptions": {
     "resolveJsonModule": false
   },
-  "exclude": ["**/*.test.ts"],
+  "exclude": ["**/*.test.ts", "src/example/*.ts"],
   "extends": "./tsconfig.json",
   "include": ["src/**/*"]
 }

@@ -45,17 +45,13 @@ async function calculateRTP(configuration: string) {
 
     const resultHelper = await import(`${path.resolve(configs.default.resultHelper)}`);
 
-    const rtp = simulateRtp(
-      configs.default.randomModes,
-      configs.default.numberOfTurnsToRun,
-      resultHelper.gameData,
-      resultHelper.generateResult,
-      resultHelper.generateResultParams,
-      resultHelper.getSettlementResult,
-      resultHelper.getSettlementResultParams,
-      resultHelper.getOdds,
-      resultHelper.updateGameData
-    );
+    const rtp = simulateRtp({
+      simulateSettings: configs.default,
+      generateResult: resultHelper.generateResult,
+      getSettlementResult: resultHelper.getSettlementResult,
+      getOdds: resultHelper.getOdds,
+      updateGameData: resultHelper.updateGameData,
+    });
 
     console.log(rtp);
     console.timeEnd("time");
