@@ -49,12 +49,15 @@ export const simulateRtp = ({
     const rtpPerChoice = { ...BET_CHOICES };
 
     for (let turn = 1; turn <= simulateSettings.numberOfTurnsToRun; turn++) {
-      const result = generateResult(randomMode);
-      const settlementResult = getSettlementResult(result);
+      gameData.turn = turn;
+      const result = generateResult(randomMode, gameData);
+      gameData.result = result;
+      const settlementResult = getSettlementResult(result, gameData);
+      gameData.settlementResult = settlementResult;
 
-      updateGameData && updateGameData(gameData, result, settlementResult, turn);
+      const betOdds = getOdds ? getOdds(gameData) : simulateSettings.gameSettings.odds;
 
-      const betOdds = getOdds ? getOdds(settlementResult, result, gameData) : simulateSettings.gameSettings.odds;
+      updateGameData && updateGameData(gameData);
       const betAmount = {} as any;
 
       gameData.gameSettings.choices.forEach((choice: string) => {
@@ -70,8 +73,10 @@ export const simulateRtp = ({
       });
     }
 
+    const extraFee = gameData.gameSettings.extraFee ?? 0;
+
     gameData.gameSettings.choices.forEach((choice: string) => {
-      rtpPerChoice[choice] = totalWin[choice] / totalBet[choice];
+      rtpPerChoice[choice] = totalWin[choice] / (totalBet[choice] * (1 + extraFee));
     });
 
     rtp[`randomMode${randomMode}`] = rtpPerChoice;
